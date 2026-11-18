@@ -131,7 +131,9 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
 #intro .ibolt{width:clamp(90px,22vw,200px);opacity:0;filter:drop-shadow(6px 6px 0 var(--hot)) drop-shadow(0 0 40px rgba(255,212,0,.8))}
 #intro .word{display:flex;gap:.25em;font:400 clamp(48px,13vw,140px)/.9 var(--display);color:var(--volt);text-shadow:4px 4px 0 var(--hot),8px 8px 0 #000}
 #intro .word span{display:inline-block;opacity:0}
-#intro .itag{font:400 clamp(16px,3.4vw,28px)/1 var(--display);color:var(--hot);letter-spacing:.08em;opacity:0}
+#intro .itag{display:flex;flex-wrap:wrap;justify-content:center;gap:.2em .6em;font:400 clamp(18px,4vw,34px)/1.1 var(--display);color:var(--hot);letter-spacing:.06em;padding-inline:16px}
+#intro .itag span{display:inline-block;opacity:0;transform:skewX(-8deg)}
+#intro .itag span:last-child{color:var(--volt)}
 #intro .wipe{position:absolute;inset:0;transform:translateX(-101%);
   background:conic-gradient(var(--ink) 25%,#000 0 50%,var(--ink) 0 75%,#000 0) 0 0/48px 48px}
 #intro .skip{position:absolute;bottom:max(16px,env(safe-area-inset-bottom,0px));right:max(16px,env(safe-area-inset-right,0px));
@@ -141,14 +143,17 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
 #intro.go .stage{animation:shake .35s linear .55s}
 #intro.go .word span:first-child{animation:inL .35s cubic-bezier(.2,1.4,.4,1) .7s forwards}
 #intro.go .word span:last-child{animation:inR .35s cubic-bezier(.2,1.4,.4,1) .9s forwards}
-#intro.go .itag{animation:blink .9s steps(1) 1.35s forwards}
-#intro.go .wipe{animation:wipe .55s cubic-bezier(.7,0,.3,1) 2.35s forwards}
+#intro.go .itag span{animation:stamp .28s cubic-bezier(.2,1.6,.4,1) forwards}
+#intro.go .itag span:nth-child(1){animation-delay:1.3s}
+#intro.go .itag span:nth-child(2){animation-delay:1.75s}
+#intro.go .itag span:nth-child(3){animation-delay:2.2s}
+#intro.go .wipe{animation:wipe .55s cubic-bezier(.7,0,.3,1) 3.15s forwards}
 @keyframes slam{0%{opacity:0;transform:scale(4) rotate(-25deg)}100%{opacity:1;transform:none}}
 @keyframes flash{0%{opacity:.9}100%{opacity:0}}
 @keyframes shake{0%,100%{transform:none}20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}60%{transform:translate(-5px,-3px)}80%{transform:translate(4px,5px)}}
 @keyframes inL{0%{opacity:0;transform:translateX(-60vw) skewX(-20deg)}100%{opacity:1;transform:skewX(-8deg)}}
 @keyframes inR{0%{opacity:0;transform:translateX(60vw) skewX(-20deg)}100%{opacity:1;transform:skewX(-8deg)}}
-@keyframes blink{0%{opacity:1}20%{opacity:0}35%{opacity:1}50%{opacity:0}65%,100%{opacity:1}}
+@keyframes stamp{0%{opacity:0;transform:scale(2.6) skewX(-8deg)}100%{opacity:1;transform:skewX(-8deg)}}
 @keyframes wipe{to{transform:translateX(0)}}
 </style>
 </head>
@@ -158,7 +163,7 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
   <div class="stage">
     <svg class="ibolt" viewBox="0 0 64 96"><path d="M40 2 6 54h22l-8 40 38-56H34l10-36Z" fill="#ffd400" stroke="#000" stroke-width="4" stroke-linejoin="round"/></svg>
     <div class="word"><span>POWER</span><span>HOUR</span></div>
-    <div class="itag">TODAY! TODAY! TODAY!</div>
+    <div class="itag"><span>NO PHONES!</span><span>NO CALLS!</span><span>JUST POWER HOUR!</span></div>
   </div>
   <div class="wipe"></div>
   <div class="skip">Tap to skip</div>
@@ -167,7 +172,7 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
 
 <div class="checker" aria-hidden="true"></div>
 <header class="wrap hero">
-  <div class="shout" aria-hidden="true"><span>TODAY! TODAY! TODAY!</span></div>
+  <div class="shout" aria-hidden="true"><span>NO PHONES! NO CALLS! JUST POWER HOUR!</span></div>
   <div class="logo">
     <svg class="bolt" viewBox="0 0 64 96" aria-hidden="true"><path d="M40 2 6 54h22l-8 40 38-56H34l10-36Z" fill="#ffd400" stroke="#000" stroke-width="4" stroke-linejoin="round"/></svg>
     <h1>POWER HOUR</h1>
@@ -202,7 +207,7 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
   try{localStorage.setItem("ph-intro",today)}catch(e){}
   el.hidden=false;requestAnimationFrame(()=>el.classList.add("go"));
   const done=()=>{if(!el.isConnected)return;el.style.transition="opacity .25s";el.style.opacity="0";setTimeout(()=>el.remove(),260);removeEventListener("keydown",done)};
-  el.addEventListener("click",done);addEventListener("keydown",done);setTimeout(done,2950);
+  el.addEventListener("click",done);addEventListener("keydown",done);setTimeout(done,3750);
 })();
 
 const $=s=>document.querySelector(s),E=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
