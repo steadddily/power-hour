@@ -151,7 +151,7 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
     <h2 id="sh">THE POINTS</h2>
     <div class="wts" id="wts"></div>
       </section>
-  <footer>Your scheduled case hour, from Salesforce. A slot cleared counts when you move a case out of ⭐️ New, 🚨 Escalated, 📣 Pending CX Response or 📣 Pending Steadily and email the case or log a task on it within 30 minutes. New from the engine: cases the Distribution Engine gives you in the hour. Calls count in each hour they touch. "Usual" is the same hour in the two weeks before Power Hour began, scored the same way.</footer>
+  <footer>Your scheduled case hour, from Salesforce. A slot cleared counts when you move a case out of ⭐️ New, 🚨 Escalated, 📣 Pending CX Response or 📣 Pending Steadily and email the case or log a task on it within 30 minutes. New from the engine: cases the Distribution Engine gives you in the hour. Calls count in each hour they touch. Team "usual" is the team's same hours in the two weeks before Power Hour began, scored the same way.</footer>
 </div></main>
 <div class="checker" aria-hidden="true"></div>
 
@@ -198,8 +198,8 @@ function render(){
   const rows=agents.map(a=>{
     const tot=Object.fromEntries(ACTIONS.map(([k])=>[k,0]));let done=0,wait=false;
     sel.forEach(d=>{const x=(CH.days[d]||{})[a];if(!x)return;if(x.notYet){wait=true;return}done++;ACTIONS.forEach(([k])=>tot[k]+=+(x.case[ix(k)]||0))});
-    const v=CH.keys.map(k=>tot[k]||0),s=score(v),b=score(CH.base[a]||[]).p*done;
-    return {a,hour:CH.schedule[a],s,base:r1(b),done,wait:wait&&!done}});
+    const v=CH.keys.map(k=>tot[k]||0),s=score(v);
+    return {a,hour:CH.schedule[a],s,done,wait:wait&&!done}});
   rows.sort((x,y)=>(x.wait-y.wait)||(y.s.p-x.s.p)||x.hour-y.hour);
   const top=Math.max(1,...rows.map(r=>r.s.p));
   let rank=0,prev=null;const firsts=rows.filter(r=>!r.wait&&r.s.p>0&&r.s.p===Math.max(...rows.filter(x=>!x.wait).map(x=>x.s.p))).length;
@@ -208,12 +208,11 @@ function render(){
     if(r.s.p!==prev){rank=i+1;prev=r.s.p}
     const place=r.s.p>0&&rank<=3?` p${rank}`:"";
     const chips=r.s.parts.map(p=>`<span class="chip">${p.n} ${CHIP[p.k][p.n===1?0:1]}${p.pts?`<em>${p.pts>0?"+":""}${fmt(p.pts)}</em>`:""}</span>`).join("")||`<span class="chip">No actions yet</span>`;
-    const d=r1(r.s.p-r.base);
     return `<li class="row${place}">${place===" p1"?`<span class="champ">${firsts>1?"CO-CHAMP":"CHAMP"} OF THE ${UI.mode==="day"?"DAY":"WEEK"}</span>`:""}<div class="rank">${rank}</div>
       <div class="who"><div class="nm"><b>${E(r.a)}</b><span>${hr(r.hour)}${UI.mode==="week"?` · ${r.done} hour${r.done===1?"":"s"}`:""}</span></div>
       <div class="bar"><i style="width:${Math.max(0,r.s.p)/top*100}%"></i></div><div class="chips">${chips}</div></div>
-      <div class="pts"><b>${fmt(r.s.p)}</b><small>usual ${fmt(r.base)} · <span class="${d>=0?"up":"down"}">${d>=0?"+":""}${fmt(d)}</span></small></div></li>`}).join("");
-  const live=rows.filter(r=>!r.wait),tp=r1(live.reduce((s,r)=>s+r.s.p,0)),tb=r1(live.reduce((s,r)=>s+r.base,0)),td=r1(tp-tb);
+      <div class="pts"><b>${fmt(r.s.p)}</b><small>points</small></div></li>`}).join("");
+  const live=rows.filter(r=>!r.wait),tp=r1(live.reduce((s,r)=>s+r.s.p,0)),tb=r1(sel.reduce((s,d)=>s+(+(CH.teamBase||{})[d]||0),0)),td=r1(tp-tb);
   $("#team").innerHTML=`<div><b>${fmt(tp)}</b><small>Team points</small></div><div><b class="${td>=0?"up":"down"}">${td>=0?"+":""}${fmt(td)}</b><small>vs usual ${fmt(tb)}</small></div><div><b>${live.length}/${rows.length}</b><small>Hours done</small></div>`;
   $("#wts").innerHTML=ACTIONS.map(([k,l])=>`<div class="wt"><span>${l}</span><output>${fmt(+W[k])}</output></div>`).join("");
 }
