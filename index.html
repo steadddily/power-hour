@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Power Hour</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Monster-truck rally poster, committed dark: each L1's case hour, scored by actions. */
+:root{
+  --bg:#0b0a0c; --panel:#17151a; --panel-2:#211e25; --rule:rgba(255,247,224,.12);
+  --ink:#fff7e0; --ink-2:rgba(255,247,224,.74); --ink-3:rgba(255,247,224,.48);
+  --volt:#ffd400; --volt-ink:#140f00; --hot:#ff3b1f; --chrome:#c9c4cf;
+  --display:"Bungee","Anton",Impact,sans-serif; --num:"Anton",Impact,"Arial Narrow",sans-serif;
+  --sans:"Barlow Condensed","Arial Narrow",-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:600 17px/1.35 var(--sans);letter-spacing:.01em}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(rgba(255,212,0,.07) 1.2px,transparent 1.6px) 0 0/9px 9px,
+             radial-gradient(70vmax 50vmax at 50% -10%,rgba(255,59,31,.28),transparent 65%)}
+header,main,.ticker{position:relative;z-index:1}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--volt);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.checker{height:14px;background:conic-gradient(var(--ink) 25%,#000 0 50%,var(--ink) 0 75%,#000 0) 0 0/14px 14px;opacity:.9}
+
+/* Hero */
+.hero{padding-block:26px 18px;display:grid;justify-items:center;text-align:center;gap:6px}
+.shout{font:400 clamp(13px,2.6vw,18px)/1 var(--display);color:var(--hot);letter-spacing:.08em}
+.shout span{display:inline-block;transform:skewX(-10deg)}
+.logo{display:flex;align-items:center;gap:clamp(6px,1.6vw,16px)}
+.logo h1{margin:0;font:400 clamp(44px,11vw,104px)/.9 var(--display);letter-spacing:.01em;
+  color:var(--volt);transform:skewX(-8deg);
+  text-shadow:3px 3px 0 var(--hot),6px 6px 0 #000,0 0 30px rgba(255,212,0,.35)}
+.bolt{width:clamp(44px,10vw,92px);height:auto;flex:none;filter:drop-shadow(4px 4px 0 var(--hot)) drop-shadow(0 0 18px rgba(255,212,0,.55))}
+.sub{font:700 clamp(15px,2.4vw,20px)/1.2 var(--sans);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2)}
+.sub b{color:var(--ink)}
+.asof{font:500 13px var(--sans);color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+
+/* Ticker of the points */
+.ticker{background:var(--volt);color:var(--volt-ink);overflow:hidden;border-block:3px solid #000;transform:rotate(-1deg);margin-block:6px 4px}
+.ticker .run{display:flex;width:max-content;font:400 17px/1 var(--num);letter-spacing:.06em;text-transform:uppercase;padding-block:9px}
+.ticker .run span{padding-inline:18px;white-space:nowrap}
+.ticker .run span::after{content:"⚡";margin-left:36px}
+@media (prefers-reduced-motion:no-preference){
+  .ticker .run{animation:roll 38s linear infinite}
+  @keyframes roll{to{transform:translateX(-50%)}}
+  .bolt{animation:zap 3.2s infinite}
+  @keyframes zap{0%,88%,100%{opacity:1}90%{opacity:.35}92%{opacity:1}94%{opacity:.5}}
+  .bar i{transition:width .7s cubic-bezier(.2,.9,.3,1.2)}
+}
+
+/* Controls */
+.ctl{display:grid;gap:8px;justify-items:center;padding-block:18px 4px}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.pills button{border:2px solid var(--ink-3);background:transparent;padding:4px 14px;cursor:pointer;
+  font:700 15px/1.1 var(--sans);text-transform:uppercase;letter-spacing:.08em;transform:skewX(-8deg)}
+.pills button:hover{border-color:var(--volt)}
+.pills button[aria-pressed="true"]{background:var(--volt);color:var(--volt-ink);border-color:var(--volt)}
+#mode button{font-size:17px;padding:5px 22px}
+
+main .wrap{padding-block:14px 56px;display:grid;gap:20px}
+
+/* Team scoreboard */
+.team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--panel);border:3px solid #000;box-shadow:6px 6px 0 var(--hot)}
+.team div{padding:12px 14px;text-align:center;border-right:2px solid var(--rule);min-width:0}
+.team div:last-child{border-right:0}
+.team b{display:block;font:400 clamp(30px,6vw,46px)/1 var(--num);color:var(--volt)}
+.team small{font:700 13px var(--sans);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)}
+.up{color:var(--volt)}.down{color:var(--hot)}
+
+/* Board */
+ol.board{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.row{display:grid;grid-template-columns:64px minmax(0,1fr) 116px;gap:4px 16px;align-items:center;padding:14px 18px;
+  background:var(--panel);border:2px solid #000;border-left:6px solid var(--chrome);position:relative}
+.rank{font:400 44px/1 var(--num);color:var(--chrome);text-align:center;transform:skewX(-8deg)}
+.who{min-width:0;display:grid;gap:7px}
+.nm{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px}
+.nm b{font:400 clamp(22px,3.4vw,28px)/1 var(--num);text-transform:uppercase;letter-spacing:.03em}
+.nm span{color:var(--ink-3);font:700 13px var(--sans);text-transform:uppercase;letter-spacing:.1em}
+.bar{height:12px;background:#000;border:1px solid var(--rule);overflow:hidden;transform:skewX(-14deg)}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(-45deg,var(--chrome) 0 8px,#9f99a6 8px 16px)}
+.chips{display:flex;flex-wrap:wrap;gap:5px 6px}
+.chip{font:600 14px/1.2 var(--sans);color:var(--ink-2);background:var(--panel-2);padding:2px 8px;white-space:nowrap}
+.chip em{font-style:normal;color:var(--volt);margin-left:4px}
+.pts{text-align:right;font-variant-numeric:tabular-nums}
+.pts b{display:block;font:400 48px/1 var(--num);color:var(--ink)}
+.pts small{color:var(--ink-3);font:600 13px var(--sans);text-transform:uppercase;letter-spacing:.06em}
+/* Places */
+.row.p1{border-left-color:var(--volt);background:linear-gradient(100deg,rgba(255,212,0,.16),var(--panel) 55%);box-shadow:6px 6px 0 var(--volt);padding-block:20px;margin-bottom:6px}
+.row.p1 .rank,.row.p1 .pts b{color:var(--volt)}
+.row.p1 .rank{font-size:60px}
+.row.p1 .pts b{font-size:62px}
+.row.p1 .bar i{background:repeating-linear-gradient(-45deg,var(--volt) 0 8px,#e0b800 8px 16px)}
+.row.p2{border-left-color:var(--chrome)}
+.row.p3{border-left-color:#d08a4a}.row.p3 .rank{color:#d08a4a}
+.champ{position:absolute;top:-12px;left:84px;background:var(--hot);color:#fff;font:400 13px/1 var(--display);letter-spacing:.08em;padding:5px 10px;transform:skewX(-10deg);border:2px solid #000}
+.row.wait{opacity:.55;border-left-color:var(--panel-2)}
+.row.wait .rank{font-size:26px}
+.row.wait .pts b{font:700 16px/1.2 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.empty{padding:28px;text-align:center;color:var(--ink-2);background:var(--panel)}
+
+/* Rules */
+section.rules{background:var(--panel);border:3px solid #000;padding:16px 18px;display:grid;gap:12px}
+section.rules h2{margin:0;font:400 22px/1 var(--display);color:var(--volt);letter-spacing:.04em}
+.wts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:6px 18px}
+.wt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:2px dashed var(--rule)}
+.wt input{width:66px;text-align:right;border:2px solid var(--ink-3);background:#000;padding:2px 8px;font:400 18px var(--num)}
+.wt output{font:400 20px var(--num);color:var(--volt)}
+.act{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.act button{border:2px solid #000;background:var(--volt);color:var(--volt-ink);padding:6px 18px;cursor:pointer;font:400 16px var(--display);box-shadow:3px 3px 0 var(--hot)}
+.act span{color:var(--ink-3);font-size:15px}
+footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
+
+@media (max-width:560px){
+  .row{grid-template-columns:40px minmax(0,1fr) 70px;padding:12px;gap:4px 10px}
+  .rank{font-size:30px}.row.p1 .rank{font-size:40px}
+  .pts b{font-size:34px}.row.p1 .pts b{font-size:42px}
+  .champ{left:52px}
+  .team small{font-size:11px;letter-spacing:.06em}
+}
+</style>
+</head>
+<body>
+
+<div class="checker" aria-hidden="true"></div>
+<header class="wrap hero">
+  <div class="shout" aria-hidden="true"><span>TODAY! TODAY! TODAY!</span></div>
+  <div class="logo">
+    <svg class="bolt" viewBox="0 0 64 96" aria-hidden="true"><path d="M40 2 6 54h22l-8 40 38-56H34l10-36Z" fill="#ffd400" stroke="#000" stroke-width="4" stroke-linejoin="round"/></svg>
+    <h1>POWER HOUR</h1>
+  </div>
+  <div class="sub" id="sub">One hour. Off the phones. <b>All cases.</b></div>
+  <div class="asof" id="asof">Loading…</div>
+</header>
+<div class="ticker" aria-label="Points"><div class="run" id="tick"></div></div>
+
+<div class="wrap ctl">
+  <div class="pills" id="mode" role="group" aria-label="Board"></div>
+  <div class="pills" id="pick" role="group" aria-label="Day or week"></div>
+</div>
+
+<main><div class="wrap">
+  <div class="team" id="team"></div>
+  <ol class="board" id="board"><li class="empty">The board appears here once it loads.</li></ol>
+  <section class="rules" aria-labelledby="sh">
+    <h2 id="sh">THE POINTS</h2>
+    <div class="wts" id="wts"></div>
+      </section>
+  <footer>Your scheduled case hour, from Salesforce. A slot cleared counts when you move a case out of ⭐️ New, 🚨 Escalated, 📣 Pending CX Response or 📣 Pending Steadily and email the case or log a task on it within 30 minutes. New from the engine: cases the Distribution Engine gives you in the hour. Calls count in each hour they touch. "Usual" is the same hour in the two weeks before Power Hour began, scored the same way.</footer>
+</div></main>
+<div class="checker" aria-hidden="true"></div>
+
+<script>
+const $=s=>document.querySelector(s),E=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CHIP={closed:["closed","closed"],clearedWork:["slot cleared","slots cleared"],sent:["email","emails"],assigned:["new from the engine","new from the engine"],outbound:["outbound call","outbound calls"],inbound:["inbound call","inbound calls"]};
+const ACTIONS=[["closed","Case closed",3],["clearedWork","Slot cleared",2],["sent","Email sent",1],["assigned","New from the engine",1],["outbound","Outbound call",1],["inbound","Inbound call taken",0]];
+let CH=null,W=Object.fromEntries(ACTIONS.map(([k,,v])=>[k,v]));
+const UI={mode:"day",day:"",week:""};
+try{Object.assign(UI,JSON.parse(localStorage.getItem("ph-ui1")||"{}"));UI.day="";UI.week=""}catch(e){}
+const save=()=>{try{localStorage.setItem("ph-ui1",JSON.stringify({mode:UI.mode}))}catch(e){}};
+const hr=h=>`${h%12||12} ${h<12?"AM":"PM"}`;
+const dlabel=d=>new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"});
+const dlong=d=>new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric",timeZone:"UTC"});
+const monday=d=>{const x=new Date(d+"T12:00:00Z");x.setUTCDate(x.getUTCDate()-((x.getUTCDay()+6)%7));return x.toISOString().slice(0,10)};
+const fmt=n=>Number.isInteger(n)?String(n):n.toFixed(1);
+const r1=n=>Math.round(n*10)/10;
+function score(v){const ix=k=>CH.keys.indexOf(k);let p=0;const parts=[];
+  ACTIONS.forEach(([k,l])=>{const n=+(v[ix(k)]||0);if(!n)return;const pts=n*(+W[k]||0);p+=pts;parts.push({k,l,n,pts})});
+  return {p:r1(p),parts}}
+function ticker(){
+  const items=ACTIONS.filter(([k])=>+W[k]).map(([k,l])=>`${E(l)} ${+W[k]>0?"+":""}${fmt(+W[k])}`);
+  const one=`<span>Be there!</span>`+items.map(t=>`<span>${t}</span>`).join("");
+  $("#tick").innerHTML=one+one;
+}
+function render(){
+  ticker();
+  if(!CH)return;
+  const days=Object.keys(CH.days).sort();
+  if(!UI.day)UI.day=days[days.length-1];
+  const weeks=[...new Set(days.map(monday))];
+  if(!UI.week)UI.week=weeks[weeks.length-1];
+  $("#asof").textContent=`Updated ${CH.updated}`;
+  $("#sub").innerHTML=UI.mode==="day"
+    ?`${E(dlong(UI.day))}${UI.day===CH.partial?" · <b>live</b>":""}`
+    :`Week of ${E(dlabel(UI.week))}`;
+  $("#mode").innerHTML=[["day","Day"],["week","Week"]].map(([k,l])=>`<button data-mode="${k}" aria-pressed="${UI.mode===k}">${l}</button>`).join("");
+  $("#pick").innerHTML=UI.mode==="day"
+    ?days.slice().reverse().map(d=>`<button data-day="${d}" aria-pressed="${UI.day===d}">${E(dlabel(d))}${d===CH.partial?" · so far":""}</button>`).join("")
+    :weeks.slice().reverse().map(w=>`<button data-week="${w}" aria-pressed="${UI.week===w}">Week of ${E(dlabel(w))}</button>`).join("");
+  const agents=Object.keys(CH.schedule);
+  const sel=UI.mode==="day"?[UI.day]:days.filter(d=>monday(d)===UI.week);
+  const ix=k=>CH.keys.indexOf(k);
+  const rows=agents.map(a=>{
+    const tot=Object.fromEntries(ACTIONS.map(([k])=>[k,0]));let done=0,wait=false;
+    sel.forEach(d=>{const x=(CH.days[d]||{})[a];if(!x)return;if(x.notYet){wait=true;return}done++;ACTIONS.forEach(([k])=>tot[k]+=+(x.case[ix(k)]||0))});
+    const v=CH.keys.map(k=>tot[k]||0),s=score(v),b=score(CH.base[a]||[]).p*done;
+    return {a,hour:CH.schedule[a],s,base:r1(b),done,wait:wait&&!done}});
+  rows.sort((x,y)=>(x.wait-y.wait)||(y.s.p-x.s.p)||x.hour-y.hour);
+  const top=Math.max(1,...rows.map(r=>r.s.p));
+  let rank=0,prev=null;const firsts=rows.filter(r=>!r.wait&&r.s.p>0&&r.s.p===Math.max(...rows.filter(x=>!x.wait).map(x=>x.s.p))).length;
+  $("#board").innerHTML=rows.map((r,i)=>{
+    if(r.wait)return `<li class="row wait"><div class="rank">⚡</div><div class="who"><div class="nm"><b>${E(r.a)}</b></div></div><div class="pts"><b>On deck · ${hr(r.hour)}</b></div></li>`;
+    if(r.s.p!==prev){rank=i+1;prev=r.s.p}
+    const place=r.s.p>0&&rank<=3?` p${rank}`:"";
+    const chips=r.s.parts.map(p=>`<span class="chip">${p.n} ${CHIP[p.k][p.n===1?0:1]}${p.pts?`<em>${p.pts>0?"+":""}${fmt(p.pts)}</em>`:""}</span>`).join("")||`<span class="chip">No actions yet</span>`;
+    const d=r1(r.s.p-r.base);
+    return `<li class="row${place}">${place===" p1"?`<span class="champ">${firsts>1?"CO-CHAMP":"CHAMP"} OF THE ${UI.mode==="day"?"DAY":"WEEK"}</span>`:""}<div class="rank">${rank}</div>
+      <div class="who"><div class="nm"><b>${E(r.a)}</b><span>${hr(r.hour)}${UI.mode==="week"?` · ${r.done} hour${r.done===1?"":"s"}`:""}</span></div>
+      <div class="bar"><i style="width:${Math.max(0,r.s.p)/top*100}%"></i></div><div class="chips">${chips}</div></div>
+      <div class="pts"><b>${fmt(r.s.p)}</b><small>usual ${fmt(r.base)} · <span class="${d>=0?"up":"down"}">${d>=0?"+":""}${fmt(d)}</span></small></div></li>`}).join("");
+  const live=rows.filter(r=>!r.wait),tp=r1(live.reduce((s,r)=>s+r.s.p,0)),tb=r1(live.reduce((s,r)=>s+r.base,0)),td=r1(tp-tb);
+  $("#team").innerHTML=`<div><b>${fmt(tp)}</b><small>Team points</small></div><div><b class="${td>=0?"up":"down"}">${td>=0?"+":""}${fmt(td)}</b><small>vs usual ${fmt(tb)}</small></div><div><b>${live.length}/${rows.length}</b><small>Hours done</small></div>`;
+  $("#wts").innerHTML=ACTIONS.map(([k,l])=>`<div class="wt"><span>${l}</span><output>${fmt(+W[k])}</output></div>`).join("");
+}
+document.addEventListener("click",e=>{
+  const m=e.target.closest("[data-mode]");if(m){UI.mode=m.dataset.mode;save();render();return}
+  const d=e.target.closest("[data-day]");if(d){UI.day=d.dataset.day;render();return}
+  const w=e.target.closest("[data-week]");if(w){UI.week=w.dataset.week;render();return}
+});
+render();
+const load=()=>fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(d=>{CH=d;Object.assign(W,d.weights||{});render()}).catch(()=>{if(!CH)$("#asof").textContent="The board did not load. Refresh the page."});
+load();setInterval(load,5*60*1000);
+</script>
+</body>
+</html>
