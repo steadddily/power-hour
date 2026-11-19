@@ -124,7 +124,7 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
   .team small{font-size:11px;letter-spacing:.06em}
 }
 
-/* Intro: once per viewer per day; tap or any key skips; ?intro forces it.
+/* Intro: plays on every page load; tap or any key skips.
    Phone rings, NO PHONES! NO CALLS!, the phone blows up, the bolt lands, JUST POWER HOUR!, checkered wipe. */
 [hidden]{display:none!important}
 #intro{position:fixed;inset:0;z-index:50;background:#000;overflow:hidden;cursor:pointer;display:grid;place-items:center}
@@ -243,12 +243,9 @@ footer{color:var(--ink-3);font:500 14px/1.4 var(--sans);max-width:100ch}
 <div class="checker" aria-hidden="true"></div>
 
 <script>
-(()=>{const el=document.getElementById("intro");const today=new Date().toISOString().slice(0,10);
-  let seen=null;try{seen=localStorage.getItem("ph-intro")}catch(e){}
-  const force=/[?&]intro\b/.test(location.search);
+(()=>{const el=document.getElementById("intro");
   const calm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(!force&&(calm||seen===today))return;
-  try{localStorage.setItem("ph-intro",today)}catch(e){}
+  if(calm)return;
   const bits=document.getElementById("bits"),cols=["#ff3b1f","#ffd400","#fff7e0","#ff3b1f","#140f00"];
   bits.outerHTML=Array.from({length:22},(_,i)=>{const a=i/22*Math.PI*2+Math.random()*.3,d=160+Math.random()*320;
     return `<b class="bit" style="--dx:${Math.round(Math.cos(a)*d)}px;--dy:${Math.round(Math.sin(a)*d)}px;--r:${Math.round(Math.random()*900-450)}deg;background:${cols[i%5]};width:${10+Math.round(Math.random()*18)}px"></b>`}).join("");
